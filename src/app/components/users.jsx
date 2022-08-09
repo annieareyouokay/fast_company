@@ -2,7 +2,7 @@ import React from "react";
 import SearchStatus from "./searchStatus";
 import User from "./user";
 
-const Users = ({ users, ...rest }) => (
+const Users = ({ users, handleToogleBookmark, handleDelete}) => (
     <div>
       {<SearchStatus length={users.length} />}
       <table className="table">
@@ -24,8 +24,8 @@ const Users = ({ users, ...rest }) => (
               key={user._id}
               count={index}
               {...user}
-              handleDelete={() => rest.handleDelete(user._id)}
-              handleToogleBookmark={() => rest.handleToogleBookmark(user._id)}
+              handleDelete={() => handleDelete(user._id)}
+              handleToogleBookmark={() => handleToogleBookmark(user._id)}
             />
           ))}
         </tbody>

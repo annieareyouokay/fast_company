@@ -1,5 +1,11 @@
 import React from "react";
 
-const Bookmark = ({bookmark, ...rest}) => <button onClick={rest.handleToogleBookmark}><h2><i className={bookmark ? "bi bi-star-fill": "bi bi-star" }/></h2></button>
+const Bookmark = ({bookmark, handleToogleBookmark}) => (
+  <button onClick={handleToogleBookmark}>
+    <h2>
+      <i className={`bi bi-star${bookmark ? "-fill" : ""}`} />
+    </h2>
+  </button>
+);
 
 export default Bookmark;

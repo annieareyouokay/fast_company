@@ -2,7 +2,7 @@ import React from "react";
 import Bookmark from "./bookmark";
 import Quality from "./quality"
 
-const User = ({count, name, profession, qualities, bookmark, completedMeetings, rate, ...rest}) => {
+const User = ({count, name, profession, qualities, bookmark, completedMeetings, rate, handleToogleBookmark, handleDelete}) => {
  
   return(
   <tr>
@@ -15,8 +15,8 @@ const User = ({count, name, profession, qualities, bookmark, completedMeetings, 
     />)}</td>
     <td>{completedMeetings}</td>
     <td>{rate}</td>
-    <td>{<Bookmark bookmark={bookmark} handleToogleBookmark={rest.handleToogleBookmark}/>}</td>
-    <td><button className="btn btn-danger" onClick={rest.handleDelete}>Delete</button></td>
+    <td>{<Bookmark bookmark={bookmark} handleToogleBookmark={handleToogleBookmark}/>}</td>
+    <td><button className="btn btn-danger" onClick={handleDelete}>Delete</button></td>
   </tr>
   )
 }
