@@ -1,11 +1,12 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const words = ["человек тусанет", "человека тусанут", "человек тусанет"];
+const words = ['человек тусанет', 'человека тусанут', 'человек тусанет'];
 
 const SearchStatus = ({ length }) => {
   const getPhrase = (length) => {
     if (!length) {
-      return "Никто не тусанет с тобой";
+      return 'Никто не тусанет с тобой';
     }
 
     return `${
@@ -20,10 +21,14 @@ const SearchStatus = ({ length }) => {
   return (
     <h1>
       <span
-        className={`badge m-2 bg-${length === 0 ? "danger" : "primary"}`}
+        className={`badge m-2 bg-${length === 0 ? 'danger' : 'primary'}`}
       >{`${length} ${getPhrase(length)}`}</span>
     </h1>
   );
+};
+
+SearchStatus.propTypes = {
+  length: PropTypes.number.isRequired
 };
 
 export default SearchStatus;
