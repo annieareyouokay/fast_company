@@ -15,16 +15,24 @@ const App = () => {
   const [users, setUsers] = useState(api.users.fetchAll());
   const [professions, setProfessions] = useState();
   const [selectedProf, setSelectedProf] = useState();
-  const userCrop = paginate(users, currentPage, pageSize);
+
+  const filteredUsers = selectedProf
+    ? users.filter((user) => user.profession === selectedProf)
+    : users;
+  const userCrop = paginate(filteredUsers, currentPage, pageSize);
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => {
       setProfessions(data);
     });
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedProf]);
+
   const handleProfessionSelect = (item) => {
     setSelectedProf(item);
-    console.log(item);
   };
 
   const handleDelete = (id) => {
@@ -44,32 +52,44 @@ const App = () => {
     );
   };
 
+  const handleClearFilter = () => {
+    setSelectedProf(undefined);
+  };
+
   if (!users.length) {
-    return (
-      <SearchStatus
-        length={users.length}
-        onItemSelect={handleProfessionSelect}
-      />
-    );
+    return <SearchStatus length={filteredUsers.length} />;
   }
 
   return (
-    <div>
+    <div className="d-flex">
       {professions && (
-        <GroupList items={professions} onItemSelect={handleProfessionSelect} selectedItem={selectedProf}/>
+        <div className="d-flex flex-column flex-shrink-0 p-3">
+          <GroupList
+            items={professions}
+            onItemSelect={handleProfessionSelect}
+            selectedItem={selectedProf}
+          />
+          <button className="btn btn-primary mt-2" onClick={handleClearFilter}>
+            Очистить
+          </button>
+        </div>
       )}
-      <Users
-        users={userCrop}
-        usersLength={users.length}
-        handleDelete={handleDelete}
-        handleToogleBookmark={handleToogleBookmark}
-      />
-      <Pagination
-        itemsCount={users.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+      <div className="d-flex flex-column">
+        <Users
+          users={userCrop}
+          usersLength={filteredUsers.length}
+          handleDelete={handleDelete}
+          handleToogleBookmark={handleToogleBookmark}
+        />
+        <div className="d-flex justify-content-center">
+          <Pagination
+            itemsCount={filteredUsers.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      </div>
     </div>
   );
 };
