@@ -6,11 +6,13 @@ import UsersTable from './usersTable';
 import { paginate } from '../utils/paginate';
 import api from '../api';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
-const Users = ({ users, handleToogleBookmark, handleDelete }) => {
+const Users = ({ users, handleToggleBookmark, handleDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
   const [professions, setProfessions] = useState();
+  const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' });
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => {
@@ -35,14 +37,15 @@ const Users = ({ users, handleToogleBookmark, handleDelete }) => {
   };
 
   const handleSort = (item) => {
-    console.log('sorted');
+    setSortBy(item);
   };
 
   const pageSize = 4;
   const filteredUsers = selectedProf
     ? users.filter((user) => user.profession._id === selectedProf._id)
     : users;
-  const userCrop = paginate(filteredUsers, currentPage, pageSize);
+  const sortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order]);
+  const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
   return (
     <div className="d-flex">
@@ -59,16 +62,17 @@ const Users = ({ users, handleToogleBookmark, handleDelete }) => {
         </div>
       )}
       <div className="d-flex flex-column">
-        {<SearchStatus length={filteredUsers.length} />}
+        {<SearchStatus length={sortedUsers.length} />}
         <UsersTable
           users={userCrop}
           handleDelete={handleDelete}
-          handleToogleBookmark={handleToogleBookmark}
+          handleToggleBookmark={handleToggleBookmark}
           onSort={handleSort}
+          selectedSort={sortBy}
         />
         <div className="d-flex justify-content-center">
           <Pagination
-            itemsCount={filteredUsers.length}
+            itemsCount={sortedUsers.length}
             pageSize={pageSize}
             currentPage={currentPage}
             onPageChange={handlePageChange}
@@ -100,7 +104,7 @@ Users.propTypes = {
       bookmark: PropTypes.bool.isRequired
     })
   ).isRequired,
-  handleToogleBookmark: PropTypes.func.isRequired,
+  handleToggleBookmark: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired
 };
 
