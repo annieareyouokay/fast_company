@@ -17,8 +17,8 @@ const UsersTable = ({
     professions: { path: 'profession.name', name: 'Профессия' },
     completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
     rate: { path: 'rate', name: 'Оценка' },
-    bookmark: { path: 'bookmark', name: 'Избранное' },
-    delete: {}
+    bookmark: { path: 'bookmark', name: 'Избранное', component: 'bookmark' },
+    delete: { component: 'delete' }
   };
   return (
     <table className="table">
