@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TableHeader from './tableHeader';
 import TableBody from './tableBody';
+import Bookmark from './bookmark';
+import QualititesList from './qualitiesList';
+import Table from './table';
 
 const UsersTable = ({
   users,
@@ -13,33 +16,43 @@ const UsersTable = ({
   const columns = {
     counter: { name: '#' },
     name: { path: 'name', name: 'Имя' },
-    qualities: { name: 'Качества' },
+    qualities: {
+      name: 'Качества',
+      component: (user) => <QualititesList qualities={user.qualities} />
+    },
     professions: { path: 'profession.name', name: 'Профессия' },
     completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
     rate: { path: 'rate', name: 'Оценка' },
-    bookmark: { path: 'bookmark', name: 'Избранное', component: 'bookmark' },
-    delete: { component: 'delete' }
+    bookmark: {
+      path: 'bookmark',
+      name: 'Избранное',
+      component: (user) => (
+        <Bookmark
+          bookmark={user.bookmark}
+          handleToggleBookmark={() => handleToggleBookmark(user._id)}
+        />
+      )
+    },
+    delete: {
+      component: (user) => (
+        <button
+          className="btn btn-danger"
+          onClick={() => handleDelete(user._id)}
+        >
+          Delete
+        </button>
+      )
+    }
   };
   return (
-    <table className="table">
+    <Table>
       <TableHeader
         onSort={onSort}
         selectedSort={selectedSort}
         columns={columns}
       />
       <TableBody columns={columns} data={users} />
-      {/* <tbody>
-        {users.map((user, index) => (
-          <User
-            key={user._id}
-            count={index}
-            {...user}
-            handleDelete={() => handleDelete(user._id)}
-            handleToogleBookmark={() => handleToggleBookmark(user._id)}
-          />
-        ))}
-      </tbody> */}
-    </table>
+    </Table>
   );
 };
 
