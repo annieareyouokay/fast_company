@@ -33,10 +33,11 @@ const Users = () => {
 
   return (
     <>
-      {userId
-        ? <UserPage {...{ userId }} />
-        : <UsersList {...{ users, handleDelete, handleToggleBookmark }} />
-      }
+      {userId ? (
+        <UserPage {...{ userId }} />
+      ) : (
+        <UsersList {...{ users, handleDelete, handleToggleBookmark }} />
+      )}
     </>
   );
 };
