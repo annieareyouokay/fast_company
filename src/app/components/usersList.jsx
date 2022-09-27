@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import SearchStatus from './searchStatus';
 import Pagination from './pagination';
 import GroupList from './groupList';
@@ -7,12 +6,21 @@ import UsersTable from './usersTable';
 import { paginate } from '../utils/paginate';
 import api from '../api';
 import _ from 'lodash';
+import SearchField from './searchField';
 
-const UsersList = ({ users, handleDelete, handleToggleBookmark }) => {
+const UsersList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
   const [professions, setProfessions] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
+  const [inputValue, setInputValue] = useState({ value: '' });
+  const [users, setUsers] = useState();
+
+  useEffect(() => {
+    api.users.fetchAll().then((data) => {
+      setUsers(data);
+    });
+  }, []);
 
   useEffect(() => {
     api.professions.fetchAll().then((data) => {
@@ -33,6 +41,7 @@ const UsersList = ({ users, handleDelete, handleToggleBookmark }) => {
   };
 
   const handleProfessionSelect = (item) => {
+    setInputValue({ value: '' });
     setSelectedProf(item);
   };
 
@@ -40,11 +49,55 @@ const UsersList = ({ users, handleDelete, handleToggleBookmark }) => {
     setSortBy(item);
   };
 
+  const handleChangeSearch = ({ target }) => {
+    setSelectedProf(undefined);
+    setInputValue({ value: target.value });
+  };
+
+  const handleDelete = (id) => {
+    setUsers(users.filter((user) => user._id !== id));
+  };
+
+  const handleToggleBookmark = (id) => {
+    setUsers(
+      users.map((user) => {
+        if (user._id === id) {
+          user.bookmark = !user.bookmark;
+          return user;
+        } else {
+          return user;
+        }
+      })
+    );
+  };
+  const filterUsers = () => {
+    let filteredUsers;
+    if (selectedProf) {
+      filteredUsers = users.filter(
+        (user) => user.profession._id === selectedProf._id
+      );
+    } else if (inputValue.value) {
+      const searchRegExp = new RegExp(
+        `${inputValue.value.toLowerCase()}+`,
+        'g'
+      );
+      filteredUsers = users.filter((user) =>
+        searchRegExp.test(user.name.toLowerCase())
+      );
+    } else {
+      filteredUsers = users;
+    }
+
+    return filteredUsers;
+  };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+  };
+
   if (users) {
     const pageSize = 6;
-    const filteredUsers = selectedProf
-      ? users.filter((user) => user.profession._id === selectedProf._id)
-      : users;
+    const filteredUsers = filterUsers();
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
@@ -70,7 +123,19 @@ const UsersList = ({ users, handleDelete, handleToggleBookmark }) => {
           </div>
         )}
         <div className="d-flex flex-column">
-          {<SearchStatus length={sortedUsers.length} />}
+          <SearchStatus length={sortedUsers.length} />
+          <div className="container">
+            <div className="row">
+              <form onSubmit={handleOnSubmit}>
+                <SearchField
+                  name="search"
+                  placeholder="search"
+                  value={inputValue.value}
+                  onChange={handleChangeSearch}
+                />
+              </form>
+            </div>
+          </div>
           <UsersTable
             users={userCrop}
             handleDelete={handleDelete}
@@ -92,12 +157,6 @@ const UsersList = ({ users, handleDelete, handleToggleBookmark }) => {
   } else {
     return 'loading...';
   }
-};
-
-UsersList.propTypes = {
-  users: PropTypes.array.isRequired,
-  handleDelete: PropTypes.func.isRequired,
-  handleToggleBookmark: PropTypes.func.isRequired
 };
 
 export default UsersList;
