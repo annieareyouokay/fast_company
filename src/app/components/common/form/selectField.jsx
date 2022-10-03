@@ -11,7 +11,7 @@ const SelectField = ({
   error
 }) => {
   const getValidClass = () => {
-    return 'form-select ' + (error ? 'is-invalid' : 'is-valid');
+    return 'form-select ' + (error ? 'is-invalid' : '');
   };
 
   const optionsArray =

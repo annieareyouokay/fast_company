@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const TextField = ({ label, name, value, onChange, type, error }) => {
   const [revealPassword, setRevealPassword] = useState(false);
   const getValidClass = () => {
-    return 'form-control ' + (error ? 'is-invalid' : 'is-valid');
+    return 'form-control ' + (error ? 'is-invalid' : '');
   };
 
   const toggleRevealPassword = () => {

@@ -14,8 +14,10 @@ const UserPage = ({ userId }) => {
     });
   }, []);
 
-  const handleReturnToAllUsers = () => {
-    history.replace('/users');
+  const handleChangeUser = () => {
+    history.push({
+      pathname: `/users/${userId}/edit`
+    });
   };
 
   if (user) {
@@ -32,9 +34,9 @@ const UserPage = ({ userId }) => {
         <div>Rate: {user.rate}</div>
         <button
           className="btn btn-secondary mt-2"
-          onClick={() => handleReturnToAllUsers()}
+          onClick={() => handleChangeUser()}
         >
-          Все пользователи
+          Изменить
         </button>
       </>
     );
