@@ -1,7 +1,7 @@
 import { React, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import API from '../api';
-import QualititesList from './qualitiesList';
+import API from '../../../api';
+import QualititesList from '../../ui/qualities/qualitiesList';
 import { useHistory } from 'react-router-dom';
 
 const UserPage = ({ userId }) => {
@@ -12,7 +12,7 @@ const UserPage = ({ userId }) => {
     API.users.getById(userId).then((user) => {
       setUser(user);
     });
-  });
+  }, []);
 
   const handleReturnToAllUsers = () => {
     history.replace('/users');

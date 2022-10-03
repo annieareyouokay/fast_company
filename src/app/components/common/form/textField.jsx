@@ -11,6 +11,10 @@ const TextField = ({ label, name, value, onChange, type, error }) => {
     setRevealPassword((prevState) => !prevState);
   };
 
+  const handleChange = ({ target }) => {
+    onChange({ name: target.name, value: target.value });
+  };
+
   return (
     <div className="mb-4">
       <label htmlFor={name}>{label}</label>
@@ -20,7 +24,7 @@ const TextField = ({ label, name, value, onChange, type, error }) => {
           id={name}
           name={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           className={getValidClass()}
         />
         {type === 'password' && (
