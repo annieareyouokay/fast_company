@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SearchField = ({ name, placeholder, value, onChange, type }) => {
-  const handleChange = ({ target }) => {
-    onChange({ name: target.name, value: target.value });
-  };
-
   return (
     <div className="input-group">
       <input
@@ -13,7 +9,7 @@ const SearchField = ({ name, placeholder, value, onChange, type }) => {
         placeholder={placeholder}
         name={name}
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         className="form-control"
       />
     </div>
