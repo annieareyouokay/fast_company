@@ -9,7 +9,9 @@ const QualitiesCard = ({ qualities }) => {
         <h5 className="card-title">
           <span>Qualities</span>
         </h5>
-        <p className="card-text"><Qualities qualities={ qualities }/></p>
+        <p className="card-text">
+          <Qualities qualities={qualities} />
+        </p>
       </div>
     </div>
   );

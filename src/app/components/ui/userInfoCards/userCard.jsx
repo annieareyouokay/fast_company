@@ -14,7 +14,10 @@ const UserCard = ({ user }) => {
   return (
     <div className="card mb-3">
       <div className="card-body">
-        <button className="position-absolute top-0 end-0 btn btn-light btn-sm" onClick={handleChangeUser}>
+        <button
+          className="position-absolute top-0 end-0 btn btn-light btn-sm"
+          onClick={handleChangeUser}
+        >
           <i className="bi bi-gear"></i>
         </button>
         <div className="d-flex flex-column align-items-center text-center position-relative">

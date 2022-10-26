@@ -74,11 +74,7 @@ const LoginForm = () => {
         type="password"
         error={errors.password}
       />
-      <CheckBoxField
-        name="stayOn"
-        value={data.stayOn}
-        onChange={handleChange}
-      >
+      <CheckBoxField name="stayOn" value={data.stayOn} onChange={handleChange}>
         Оставаться в системе
       </CheckBoxField>
       <button

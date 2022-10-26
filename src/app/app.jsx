@@ -11,10 +11,10 @@ const App = () => {
     <>
       <NavBar />
       <Switch>
-        <Route exact path='/' component={Main} />
-        <Route path='/login' component={Login} />
-        <Route path='/users/:id/edit' component={UserEditPage} />
-        <Route path='/users/:userId?' component={Users} />
+        <Route exact path="/" component={Main} />
+        <Route path="/login" component={Login} />
+        <Route path="/users/:id/edit" component={UserEditPage} />
+        <Route path="/users/:userId?" component={Users} />
       </Switch>
     </>
   );

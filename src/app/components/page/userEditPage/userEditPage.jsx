@@ -79,7 +79,7 @@ const UserEditPage = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const isValid = Object.keys(errors).length === 0;
+  let isValid = Object.keys(errors).length === 0;
 
   const getProfessionById = (id) => {
     for (const prof of professions) {
@@ -106,7 +106,7 @@ const UserEditPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const isValid = validate();
+    isValid = validate();
     if (!isValid) return;
     const { profession, qualities } = data;
 
@@ -119,12 +119,14 @@ const UserEditPage = () => {
   };
 
   const handleComeback = () => {
-    history.replace(`/users/${data._id}`);
+    history.goBack();
   };
 
   return (
     <div className="container mt-5">
-      <button className="btn btn-primary" onClick={handleComeback}>Назад</button>
+      <button className="btn btn-primary" onClick={handleComeback}>
+        Назад
+      </button>
       <div className="row">
         <div className="col-md-6 offset-md-3 shadow p-4">
           {data.name && professions.length ? (
