@@ -1,19 +1,14 @@
-import { React, useEffect, useState } from 'react';
+import { React } from 'react';
 import PropTypes from 'prop-types';
-import API from '../../../api';
 import UserCard from '../../ui/userInfoCards/userCard';
 import MeetingsCard from '../../ui/userInfoCards/meetingsCard';
 import QualitiesCard from '../../ui/userInfoCards/qualitiesCard';
 import Comments from '../../ui/comments';
+import { useUsers } from '../../../../hooks/useUsers';
 
 const UserPage = ({ userId }) => {
-  const [user, setUser] = useState();
-
-  useEffect(() => {
-    API.users.getById(userId).then((user) => {
-      setUser(user);
-    });
-  }, []);
+  const { getUserById } = useUsers();
+  const user = getUserById(userId);
 
   if (user) {
     return (

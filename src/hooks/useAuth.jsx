@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import localStorageService, {
   setTokens
 } from '../app/services/localStorage.service';
+import { useHistory } from 'react-router-dom';
 
 export const httpAuth = axios.create({
   baseURL: 'https://identitytoolkit.googleapis.com/v1/',
@@ -20,8 +21,10 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState();
   const [error, setError] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+  const history = useHistory();
 
   async function getUserData() {
     try {
@@ -29,12 +32,16 @@ const AuthProvider = ({ children }) => {
       setCurrentUser(content);
     } catch (error) {
       errorCatcher(error);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
     if (localStorageService.getAccessToken()) {
       getUserData();
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -42,6 +49,12 @@ const AuthProvider = ({ children }) => {
     toast.error(error);
     setError(null);
   }, [error]);
+
+  function logOut() {
+    localStorageService.removeAuthData();
+    setCurrentUser(null);
+    history.push('/');
+  }
 
   function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -61,6 +74,9 @@ const AuthProvider = ({ children }) => {
         password,
         rate: randomInt(1, 5),
         completedMeetings: randomInt(0, 200),
+        image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
+          .toString(36)
+          .substring(7)}.svg`,
         ...rest
       });
     } catch (error) {
@@ -115,8 +131,8 @@ const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ signUp, signIn, currentUser }}>
-      {children}
+    <AuthContext.Provider value={{ signUp, signIn, logOut, currentUser }}>
+      {!isLoading ? children : 'Loading'}
     </AuthContext.Provider>
   );
 };

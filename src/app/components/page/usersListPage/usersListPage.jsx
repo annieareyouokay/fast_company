@@ -4,31 +4,20 @@ import Pagination from '../../common/pagination';
 import GroupList from '../../common/groupList';
 import UsersTable from '../../ui/usersTable';
 import { paginate } from '../../../utils/paginate';
-import api from '../../../api';
 import _ from 'lodash';
 import SearchField from '../../common/form/searchField';
 import { useUsers } from '../../../../hooks/useUsers';
+import { useProfessions } from '../../../../hooks/useProfessions';
+import { useAuth } from '../../../../hooks/useAuth';
 
 const UsersListPage = () => {
+  const { isLoading: professionsLoading, professions } = useProfessions();
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProf, setSelectedProf] = useState();
-  const [professions, setProfessions] = useState();
   const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
   const [inputValue, setInputValue] = useState({ value: '' });
-  // const [users, setUsers] = useState();
   const { users } = useUsers();
-
-  // useEffect(() => {
-  //   api.users.fetchAll().then((data) => {
-  //     setUsers(data);
-  //   });
-  // }, []);
-
-  useEffect(() => {
-    api.professions.fetchAll().then((data) => {
-      setProfessions(data);
-    });
-  }, []);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     setCurrentPage(1);
@@ -90,7 +79,7 @@ const UsersListPage = () => {
       filteredUsers = users;
     }
 
-    return filteredUsers;
+    return filteredUsers.filter(u => u._id !== currentUser._id);
   };
 
   const handleOnSubmit = (e) => {
@@ -109,7 +98,7 @@ const UsersListPage = () => {
 
     return (
       <div className="d-flex">
-        {professions && (
+        {professions && !professionsLoading && (
           <div className="d-flex flex-column flex-shrink-0 p-3">
             <GroupList
               items={professions}
