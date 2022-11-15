@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const CommentsList = ({ comments, handleDelete }) => {
   return comments.map((comment) => (
-    <Comment key={comment._id} comment={comment} onClick={handleDelete} />
+    <Comment key={comment._id} comment={comment} userId={comment.userId} onClick={handleDelete} />
   ));
 };
 

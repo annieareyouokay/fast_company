@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Bookmark = ({ bookmark, handleToggleBookmark }) => (
+const Bookmark = ({ bookmark = false, handleToggleBookmark }) => (
   <button onClick={handleToggleBookmark}>
     <h2>
       <i className={`bi bi-star${bookmark ? '-fill' : ''}`} />
@@ -10,7 +10,7 @@ const Bookmark = ({ bookmark, handleToggleBookmark }) => (
 );
 
 Bookmark.propTypes = {
-  bookmark: PropTypes.bool.isRequired,
+  bookmark: PropTypes.bool,
   handleToggleBookmark: PropTypes.func.isRequired
 };
 

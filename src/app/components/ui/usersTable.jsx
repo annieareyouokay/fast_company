@@ -12,6 +12,7 @@ const UsersTable = ({
   onSort,
   selectedSort
 }) => {
+  console.log(users);
   const columns = {
     counter: { name: '#' },
     name: {
@@ -31,7 +32,7 @@ const UsersTable = ({
       name: 'Избранное',
       component: (user) => (
         <Bookmark
-          bookmark={user.bookmark}
+          // bookmark={user.bookmark}
           handleToggleBookmark={() => handleToggleBookmark(user._id)}
         />
       )

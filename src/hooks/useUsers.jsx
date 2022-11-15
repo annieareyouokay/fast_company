@@ -41,6 +41,7 @@ const UserProvider = ({ children }) => {
   function getUserById(userId) {
     return users.find(user => user._id === userId);
   }
+
   return (
     <UserContext.Provider value={{ users, getUserById }}>
       {!isLoading ? children : 'Loading ...'}

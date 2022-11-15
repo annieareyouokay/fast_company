@@ -45,20 +45,17 @@ const UsersListPage = () => {
     setInputValue({ value: target.value });
   };
 
-  const handleDelete = (id) => {
-    // setUsers(users.filter((user) => user._id !== id));
-  };
-
   const handleToggleBookmark = (id) => {
+    const newUsers = users.map((user) => {
+      if (user._id === id) {
+        user.bookmark = !user.bookmark;
+        return user;
+      } else {
+        return user;
+      }
+    });
+    console.log(newUsers);
     // setUsers(
-    //   users.map((user) => {
-    //     if (user._id === id) {
-    //       user.bookmark = !user.bookmark;
-    //       return user;
-    //     } else {
-    //       return user;
-    //     }
-    //   })
     // );
   };
   const filterUsers = () => {
@@ -129,7 +126,6 @@ const UsersListPage = () => {
           </div>
           <UsersTable
             users={userCrop}
-            handleDelete={handleDelete}
             handleToggleBookmark={handleToggleBookmark}
             onSort={handleSort}
             selectedSort={sortBy}
