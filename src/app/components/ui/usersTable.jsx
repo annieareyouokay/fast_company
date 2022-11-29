@@ -1,20 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Bookmark from '../common/bookmark';
-import Qualitites from './qualities';
-import Table, { TableBody, TableHeader } from '../common/table';
+
+import BookMark from '../common/bookmark';
+import Qualities from './qualities';
+import Table from '../common/table';
 import { Link } from 'react-router-dom';
 import Profession from './profession';
 
-const UsersTable = ({
+const UserTable = ({
   users,
-  handleToggleBookmark,
   onSort,
-  selectedSort
+  selectedSort,
+  onToggleBookMark,
+  ...rest
 }) => {
-  console.log(users);
   const columns = {
-    counter: { name: '#' },
     name: {
       path: 'name',
       name: 'Имя',
@@ -22,39 +22,43 @@ const UsersTable = ({
     },
     qualities: {
       name: 'Качества',
-      component: (user) => <Qualitites qualities={user.qualities} />
+      component: (user) => <Qualities qualities={user.qualities} />
     },
-    professions: { name: 'Профессия', component: (user) => <Profession id={user.profession} /> },
-    completedMeetings: { path: 'completedMeetings', name: 'Встретился, раз' },
+    professions: {
+      name: 'Профессия',
+      component: (user) => <Profession id={user.profession} />
+    },
+    completedMeetings: {
+      path: 'completedMeetings',
+      name: 'Встретился, раз'
+    },
     rate: { path: 'rate', name: 'Оценка' },
     bookmark: {
       path: 'bookmark',
       name: 'Избранное',
       component: (user) => (
-        <Bookmark
-          // bookmark={user.bookmark}
-          handleToggleBookmark={() => handleToggleBookmark(user._id)}
+        <BookMark
+          status={user.bookmark}
+          onClick={() => onToggleBookMark(user._id)}
         />
       )
     }
   };
   return (
-    <Table>
-      <TableHeader
-        onSort={onSort}
-        selectedSort={selectedSort}
-        columns={columns}
-      />
-      <TableBody columns={columns} data={users} />
-    </Table>
+    <Table
+      onSort={onSort}
+      selectedSort={selectedSort}
+      columns={columns}
+      data={users}
+    />
   );
 };
 
-UsersTable.propTypes = {
+UserTable.propTypes = {
   users: PropTypes.array.isRequired,
-  handleToggleBookmark: PropTypes.func.isRequired,
   onSort: PropTypes.func.isRequired,
-  selectedSort: PropTypes.object.isRequired
+  selectedSort: PropTypes.object.isRequired,
+  onToggleBookMark: PropTypes.func.isRequired
 };
 
-export default UsersTable;
+export default UserTable;

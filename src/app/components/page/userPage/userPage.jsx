@@ -1,35 +1,34 @@
-import { React } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import UserCard from '../../ui/userInfoCards/userCard';
-import MeetingsCard from '../../ui/userInfoCards/meetingsCard';
-import QualitiesCard from '../../ui/userInfoCards/qualitiesCard';
+import UserCard from '../../ui/userCard';
+import QualitiesCard from '../../ui/qualitiesCard';
+import MeetingsCard from '../../ui/meetingsCard';
 import Comments from '../../ui/comments';
-import { useUsers } from '../../../../hooks/useUsers';
-import CommentsProvider from '../../../../hooks/useComments';
+import { useUser } from '../../../hooks/useUsers';
+import { CommentsProvider } from '../../../hooks/useComments';
 
 const UserPage = ({ userId }) => {
-  const { getUserById } = useUsers();
+  const { getUserById } = useUser();
   const user = getUserById(userId);
-
   if (user) {
     return (
       <div className="container">
         <div className="row gutters-sm">
           <div className="col-md-4 mb-3">
             <UserCard user={user} />
-            <QualitiesCard qualities={user.qualities} />
-            <MeetingsCard completedMeetings={user.completedMeetings} />
+            <QualitiesCard data={user.qualities} />
+            <MeetingsCard value={user.completedMeetings} />
           </div>
           <div className="col-md-8">
             <CommentsProvider>
-              <Comments userId={userId} />
+              <Comments />
             </CommentsProvider>
           </div>
         </div>
       </div>
     );
   } else {
-    return <h1>Loading...</h1>;
+    return <h1>Loading</h1>;
   }
 };
 

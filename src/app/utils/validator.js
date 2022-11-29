@@ -1,55 +1,51 @@
 export function validator(data, config) {
   const errors = {};
-  function validate(validateMethod, fieldData, config) {
-    let validateStatus;
+  function validate(validateMethod, data, config) {
+    let statusValidate;
     switch (validateMethod) {
       case 'isRequired': {
-        if (typeof fieldData === 'boolean') {
-          validateStatus = !fieldData;
+        if (typeof data === 'boolean') {
+          statusValidate = !data;
         } else {
-          validateStatus = fieldData.trim() === '';
+          statusValidate = data.trim() === '';
         }
         break;
       }
       case 'isEmail': {
         const emailRegExp = /^\S+@\S+\.\S+$/g;
-        validateStatus = !emailRegExp.test(fieldData);
+        statusValidate = !emailRegExp.test(data);
         break;
       }
-      case 'isContainCapital': {
+      case 'isCapitalSymbol': {
         const capitalRegExp = /[A-Z]+/g;
-        validateStatus = !capitalRegExp.test(fieldData);
+        statusValidate = !capitalRegExp.test(data);
         break;
       }
-      case 'isContainDigits': {
+      case 'isContainDigit': {
         const digitRegExp = /\d+/g;
-        validateStatus = !digitRegExp.test(fieldData);
+        statusValidate = !digitRegExp.test(data);
         break;
       }
-      case 'minSymbols': {
-        validateStatus = fieldData.length < config.value;
+      case 'min': {
+        statusValidate = data.length < config.value;
         break;
       }
       default:
         break;
     }
-
-    if (validateStatus) {
-      return config.message;
-    }
+    if (statusValidate) return config.message;
   }
   for (const fieldName in data) {
     for (const validateMethod in config[fieldName]) {
-      const err = validate(
+      const error = validate(
         validateMethod,
         data[fieldName],
         config[fieldName][validateMethod]
       );
-      if (err && !errors[fieldName]) {
-        errors[fieldName] = err;
+      if (error && !errors[fieldName]) {
+        errors[fieldName] = error;
       }
     }
   }
-
   return errors;
 }

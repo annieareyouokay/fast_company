@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../../hooks/useAuth';
-
-const NavProfile = () => {
+import { useAuth } from '../../hooks/useAuth';
+function NavProfile() {
   const { currentUser } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setOpen] = useState(false);
   const toggleMenu = () => {
-    setIsOpen((prevState) => !prevState);
+    setOpen((prevState) => !prevState);
   };
-
   return (
     <div className="dropdown" onClick={toggleMenu}>
       <div className="btn dropdown-toggle d-flex align-items-center">
@@ -24,12 +22,12 @@ const NavProfile = () => {
         <Link to={`/users/${currentUser._id}`} className="dropdown-item">
           Profile
         </Link>
-        <Link to={'/logout'} className="dropdown-item">
-          Log out
+        <Link to="/logout" className="dropdown-item">
+          Log Out
         </Link>
       </div>
     </div>
   );
-};
+}
 
 export default NavProfile;

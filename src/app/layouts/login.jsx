@@ -8,8 +8,7 @@ const Login = () => {
   const [formType, setFormType] = useState(
     type === 'register' ? type : 'login'
   );
-
-  const toggleFormType = () => {
+  const toggleFormType = (params) => {
     setFormType((prevState) =>
       prevState === 'register' ? 'login' : 'register'
     );
@@ -25,8 +24,9 @@ const Login = () => {
               <RegisterForm />
               <p>
                 Already have account?{' '}
-                <a onClick={toggleFormType} type="button">
-                  Sign in
+                <a role="button" onClick={toggleFormType}>
+                  {' '}
+                  Sign In
                 </a>
               </p>
             </>
@@ -35,9 +35,10 @@ const Login = () => {
               <h3 className="mb-4">Login</h3>
               <LoginForm />
               <p>
-                Dont have account yet?{' '}
-                <a onClick={toggleFormType} type="button">
-                  Sign up
+                Dont have account?{' '}
+                <a role="button" onClick={toggleFormType}>
+                  {' '}
+                  Sign Up
                 </a>
               </p>
             </>

@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import TextArea from '../form/textArea';
-import PropTypes from 'prop-types';
+import TextAreaField from '../form/textAreaField';
 import { validator } from '../../../utils/validator';
+import PropTypes from 'prop-types';
 
 const AddCommentForm = ({ onSubmit }) => {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
-
+  const handleChange = (target) => {
+    setData((prevState) => ({
+      ...prevState,
+      [target.name]: target.value
+    }));
+  };
   const validatorConfig = {
     content: {
       isRequired: {
-        message: 'Введите ваш комментарий'
+        message: 'Сообщение не может быть пустым'
       }
     }
   };
@@ -20,39 +25,35 @@ const AddCommentForm = ({ onSubmit }) => {
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
-
-  const handleChange = (target) => {
-    setData((prevState) => ({ ...prevState, [target.name]: target.value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const isValidate = validate();
-    if (!isValidate) return;
-    onSubmit(data);
+  const clearForm = () => {
     setData({});
     setErrors({});
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isValid = validate();
+    if (!isValid) return;
+    onSubmit(data);
+    clearForm();
+  };
   return (
-    <form onSubmit={handleSubmit}>
-      <TextArea
-        label="Сообщение"
-        name="content"
-        rows="3"
-        value={data.content || ''}
-        onChange={handleChange}
-        error={errors.content}
-      />
-      <div className='d-flex justify-content-end'>
-        <button type="submit" className="btn btn-primary">
-          Опубликовать
-        </button>
-      </div>
-    </form>
+    <div>
+      <h2>New comment</h2>
+      <form onSubmit={handleSubmit}>
+        <TextAreaField
+          value={data.content || ''}
+          onChange={handleChange}
+          name="content"
+          label="Сообщение"
+          error={errors.content}
+        />
+        <div className="d-flex justify-content-end">
+          <button className="btn btn-primary">Опубликовать</button>
+        </div>
+      </form>
+    </div>
   );
 };
-
 AddCommentForm.propTypes = {
   onSubmit: PropTypes.func
 };

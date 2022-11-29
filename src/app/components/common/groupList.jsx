@@ -8,19 +8,20 @@ const GroupList = ({
   onItemSelect,
   selectedItem
 }) => {
-  if (Array.isArray(items)) {
+  if (!Array.isArray(items)) {
     return (
       <ul className="list-group">
-        {items.map((item) => (
+        {Object.keys(items).map((item) => (
           <li
-            key={item[valueProperty]}
+            key={items[item][valueProperty]}
             className={
-              'list-group-item' + (item === selectedItem ? ' active' : '')
+              'list-group-item' +
+              (items[item] === selectedItem ? ' active' : '')
             }
-            onClick={() => onItemSelect(item)}
+            onClick={() => onItemSelect(items[item])}
             role="button"
           >
-            {item[contentProperty]}
+            {items[item][contentProperty]}
           </li>
         ))}
       </ul>
@@ -28,16 +29,16 @@ const GroupList = ({
   }
   return (
     <ul className="list-group">
-      {Object.keys(items).map((item) => (
+      {items.map((item) => (
         <li
-          key={items[item][valueProperty]}
+          key={item[valueProperty]}
           className={
-            'list-group-item' + (items[item] === selectedItem ? ' active' : '')
+            'list-group-item' + (item === selectedItem ? ' active' : '')
           }
-          onClick={() => onItemSelect(items[item])}
+          onClick={() => onItemSelect(item)}
           role="button"
         >
-          {items[item][contentProperty]}
+          {item[contentProperty]}
         </li>
       ))}
     </ul>
@@ -48,7 +49,7 @@ GroupList.defaultProps = {
   contentProperty: 'name'
 };
 GroupList.propTypes = {
-  items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  items: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   valueProperty: PropTypes.string.isRequired,
   contentProperty: PropTypes.string.isRequired,
   onItemSelect: PropTypes.func,

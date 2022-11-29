@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 
 const SelectField = ({
   label,
-  name,
   value,
   onChange,
   defaultOption,
   options,
-  error
+  error,
+  name
 }) => {
-  const getValidClass = () => {
-    return 'form-select ' + (error ? 'is-invalid' : '');
+  const handleChange = ({ target }) => {
+    onChange({ name: target.name, value: target.value });
+  };
+  const getInputClasses = () => {
+    return 'form-select' + (error ? ' is-invalid' : '');
   };
 
   const optionsArray =
@@ -19,26 +22,22 @@ const SelectField = ({
       ? Object.values(options)
       : options;
 
-  const handleChange = ({ target }) => {
-    onChange({ name: target.name, value: target.value });
-  };
-
   return (
     <div className="mb-4">
-      <label className="form-label" htmlFor={name}>
+      <label htmlFor={name} className="form-label">
         {label}
       </label>
       <select
-        name={name}
-        className={getValidClass()}
+        className={getInputClasses()}
         id={name}
+        name={name}
         value={value}
         onChange={handleChange}
       >
         <option disabled value="">
           {defaultOption}
         </option>
-        {optionsArray.length &&
+        {optionsArray.length > 0 &&
           optionsArray.map((option) => (
             <option value={option.value} key={option.value}>
               {option.label}
@@ -51,13 +50,13 @@ const SelectField = ({
 };
 
 SelectField.propTypes = {
-  name: PropTypes.string,
+  defaultOption: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  defaultOption: PropTypes.string,
-  options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  error: PropTypes.string
+  error: PropTypes.string,
+  options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  name: PropTypes.string
 };
 
 export default SelectField;

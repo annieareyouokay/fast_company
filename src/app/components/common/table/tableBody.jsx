@@ -9,12 +9,10 @@ const TableBody = ({ data, columns }) => {
       if (typeof component === 'function') {
         return component(item);
       }
-
       return component;
     }
     return _.get(item, columns[column].path);
   };
-
   return (
     <tbody>
       {data.map((item) => (

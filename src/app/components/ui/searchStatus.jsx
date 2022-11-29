@@ -1,34 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const words = ['человек тусанет', 'человека тусанут', 'человек тусанет'];
-
 const SearchStatus = ({ length }) => {
-  const getPhrase = (length) => {
-    if (!length) {
-      return 'Никто не тусанет с тобой';
+  const renderPhrase = (number) => {
+    const lastOne = Number(number.toString().slice(-1));
+    if (number > 4 && number < 15) {
+      return 'человек тусанет';
     }
-
-    return `${
-      words[
-        length % 100 > 4 && length % 100 < 20
-          ? 2
-          : [2, 0, 1, 1, 1, 2][length % 10 < 5 ? Math.abs(length) % 10 : 5]
-      ]
-    } с тобой сегодня`;
+    if (lastOne === 1) return 'человек тусанет';
+    if ([2, 3, 4].indexOf(lastOne) >= 0) return 'человека тусанут';
+    return 'человек тусанет';
   };
-
   return (
-    <h1>
-      <span
-        className={`badge m-2 bg-${length === 0 ? 'danger' : 'primary'}`}
-      >{`${length} ${getPhrase(length)}`}</span>
-    </h1>
+    <h2>
+      <span className={'badge ' + (length > 0 ? 'bg-primary' : 'bg-danger')}>
+        {length > 0
+          ? `${length + ' ' + renderPhrase(length)}   с тобой сегодня`
+          : 'Никто с тобой не тусанет'}
+      </span>
+    </h2>
   );
 };
-
 SearchStatus.propTypes = {
-  length: PropTypes.number.isRequired
+  length: PropTypes.number
 };
 
 export default SearchStatus;

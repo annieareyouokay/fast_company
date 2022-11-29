@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const MeetingsCard = ({ completedMeetings }) => {
+const MeetingsCard = ({ value }) => {
   return (
     <div className="card mb-3">
       <div className="card-body d-flex flex-column justify-content-center text-center">
@@ -9,14 +8,13 @@ const MeetingsCard = ({ completedMeetings }) => {
           <span>Completed meetings</span>
         </h5>
 
-        <h1 className="display-1">{completedMeetings}</h1>
+        <h1 className="display-1">{value}</h1>
       </div>
     </div>
   );
 };
-
 MeetingsCard.propTypes = {
-  completedMeetings: PropTypes.number.isRequired
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
 export default MeetingsCard;

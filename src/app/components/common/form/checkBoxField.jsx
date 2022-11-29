@@ -3,17 +3,15 @@ import PropTypes from 'prop-types';
 
 const CheckBoxField = ({ name, value, onChange, children, error }) => {
   const handleChange = () => {
-    onChange({ name, value: !value });
+    onChange({ name: name, value: !value });
   };
-
-  const getValidClass = () => {
-    return 'form-check-input ' + (error ? 'is-invalid' : '');
+  const getInputClasses = () => {
+    return 'form-check-input' + (error ? ' is-invalid' : '');
   };
-
   return (
     <div className="form-check mb-4">
       <input
-        className={getValidClass()}
+        className={getInputClasses()}
         type="checkbox"
         value=""
         id={name}
@@ -27,7 +25,6 @@ const CheckBoxField = ({ name, value, onChange, children, error }) => {
     </div>
   );
 };
-
 CheckBoxField.propTypes = {
   name: PropTypes.string,
   value: PropTypes.bool,

@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createdAt } from '../../../utils/datetime';
-import { useUsers } from '../../../../hooks/useUsers';
-import { useAuth } from '../../../../hooks/useAuth';
-
-const Comment = ({ comment, userId, onClick }) => {
-  const { getUserById } = useUsers();
+import { displayDate } from '../../../utils/displayDate';
+import { useUser } from '../../../hooks/useUsers';
+import { useAuth } from '../../../hooks/useAuth';
+const Comment = ({
+  content,
+  created_at: created,
+  _id: id,
+  userId,
+  onRemove
+}) => {
+  const { getUserById } = useUser();
   const { currentUser } = useAuth();
   const user = getUserById(userId);
 
@@ -25,22 +30,19 @@ const Comment = ({ comment, userId, onClick }) => {
               <div className="mb-4">
                 <div className="d-flex justify-content-between align-items-center">
                   <p className="mb-1 ">
-                    {user.name}
-                    <span className="small">
-                      {' '}
-                      {createdAt(comment.created_at)}
-                    </span>
+                    {user && user.name}{' '}
+                    <span className="small">- {displayDate(created)}</span>
                   </p>
                   {currentUser._id === userId && (
                     <button
                       className="btn btn-sm text-primary d-flex align-items-center"
-                      onClick={() => onClick(comment._id)}
+                      onClick={() => onRemove(id)}
                     >
                       <i className="bi bi-x-lg"></i>
                     </button>
                   )}
                 </div>
-                <p className="small mb-0">{comment.content}</p>
+                <p className="small mb-0">{content}</p>
               </div>
             </div>
           </div>
@@ -49,11 +51,13 @@ const Comment = ({ comment, userId, onClick }) => {
     </div>
   );
 };
-
 Comment.propTypes = {
-  comment: PropTypes.object.isRequired,
-  userId: PropTypes.string.isRequired,
-  onClick: PropTypes.func
+  content: PropTypes.string,
+  edited_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  created_at: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  userId: PropTypes.string,
+  onRemove: PropTypes.func,
+  _id: PropTypes.string
 };
 
 export default Comment;

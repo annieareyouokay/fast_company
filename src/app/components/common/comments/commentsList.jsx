@@ -2,15 +2,14 @@ import React from 'react';
 import Comment from './comment';
 import PropTypes from 'prop-types';
 
-const CommentsList = ({ comments, handleDelete }) => {
+const CommentsList = ({ comments, onRemove }) => {
   return comments.map((comment) => (
-    <Comment key={comment._id} comment={comment} userId={comment.userId} onClick={handleDelete} />
+    <Comment key={comment._id} {...comment} onRemove={onRemove} />
   ));
 };
-
 CommentsList.propTypes = {
-  comments: PropTypes.array.isRequired,
-  handleDelete: PropTypes.func
+  comment: PropTypes.array,
+  onRemove: PropTypes.func
 };
 
 export default CommentsList;

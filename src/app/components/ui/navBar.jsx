@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import NavProfile from './navProfile';
-
 const NavBar = () => {
   const { currentUser } = useAuth();
   return (
@@ -10,23 +9,23 @@ const NavBar = () => {
       <div className="container-fluid">
         <ul className="nav">
           <li className="nav-item">
-            <Link className="nav-link" aria-current="page" to="/">
+            <Link className="nav-link " aria-current="page" to="/">
               Main
             </Link>
           </li>
-          <li className="nav-item">
-            {currentUser && (
-              <Link className="nav-link" aria-current="page" to="/users">
+          {currentUser && (
+            <li className="nav-item">
+              <Link className="nav-link " aria-current="page" to="/users">
                 Users
               </Link>
-            )}
-          </li>
+            </li>
+          )}
         </ul>
         <div className="d-flex">
           {currentUser ? (
-            <NavProfile/>
+            <NavProfile />
           ) : (
-            <Link className="nav-link" aria-current="page" to="/login">
+            <Link className="nav-link " aria-current="page" to="/login">
               Login
             </Link>
           )}
@@ -35,4 +34,5 @@ const NavBar = () => {
     </nav>
   );
 };
+
 export default NavBar;
